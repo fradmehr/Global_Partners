@@ -7,7 +7,7 @@ Step by step process:
 IAM credentials:
 Policies: AmazonS3FullAccess; AWSGlueServiceRole
 3. Create S3 bucket as the destination to load the files
-4. Create IAM user to read files in S3 from local python code.
+4. Create IAM user to read files in S3 from local python code. Use (2. S3 to local computer-Global Partners.ipynb) to read files.
 5. Run python code to create streamlit app (glabalpartners_questions.py) in terminal.  
 cd <directory>
 streamlit run glabalpartners_questions.py
