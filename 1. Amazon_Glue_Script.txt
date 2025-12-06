@@ -1,0 +1,42 @@
+from awsglue.transforms import *
+from awsglue.utils import getResolvedOptions
+from awsglue.context import GlueContext
+from awsglue.job import Job
+from pyspark.context import SparkContext
+
+# --- Spark & Glue setup ---
+sc = SparkContext()
+glueContext = GlueContext(sc)
+spark = glueContext.spark_session
+job = Job(glueContext)
+
+# --- Connection details ---
+jdbc_url = "jdbc:sqlserver://database-1.ck1ywc00wv03.us-east-1.rds.amazonaws.com:1433;databaseName=GlobalPartners"
+user = "admin"
+password = "Fr1528174"
+
+# --- Tables to export ---
+tables = ["date_dim", "order_item_options", "order_items"]
+
+# --- Loop through tables ---
+for table in tables:
+    # Read table into DynamicFrame
+    dyf = glueContext.create_dynamic_frame.from_options(
+        connection_type="sqlserver",
+        connection_options={
+            "url": jdbc_url,
+            "dbtable": f"dbo.{table}",
+            "user": user,
+            "password": password
+        }
+    )
+
+    # Convert to DataFrame
+    df = dyf.toDF()
+
+    # Write each table to its own folder in S3 as a single CSV file
+    df.coalesce(1) \
+      .write \
+      .mode("overwrite") \
+      .option("header", "true") \
+      .csv(f"s3://rds-sqlserver-csv-export/{table}/")
