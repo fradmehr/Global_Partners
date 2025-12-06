@@ -3,7 +3,7 @@ Global Partners Project:
 First, we use the AMAZON RDS to load the data files there; then using AMAZON GLUE, we schedule the process to read the files from RDS to S3.
 Step by step process:
 1. Use instruction video to write files into Amazon RDS
-2. Create pyspark scripts for GLUE (Amazon_Glue_Script); and create the job details with IAM role with below credentials; and create a daily schedule for it:
+2. Create pyspark scripts for GLUE (1.Amazon_Glue_Script.txt); and create the job details with IAM role with below credentials; and create a daily schedule for it:
 IAM credentials:
 Policies: AmazonS3FullAccess; AWSGlueServiceRole
 3. Create S3 bucket as the destination to load the files
